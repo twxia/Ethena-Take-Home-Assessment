@@ -74,4 +74,9 @@ export const tokens = [
     contract: stethContract,
     logo: 'https://etherscan.io/token/images/lido-steth_32.png',
   },
+  {
+    name: 'ETH',
+    contract: null,
+    logo: 'https://assets.coingecko.com/coins/images/279/standard/ethereum.png',
+  },
 ];

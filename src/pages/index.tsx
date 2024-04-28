@@ -1,5 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { multicall } from '@wagmi/core';
+import { getBalance, multicall } from '@wagmi/core';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { formatUnits } from 'viem';
@@ -34,14 +34,28 @@ export default function HomePage() {
         return;
       }
 
+      const erc20s = tokens.reduce(
+        (prev, token) => {
+          if (token.contract) {
+            prev.push(token);
+          }
+          return prev;
+        },
+        [] as {
+          logo: string;
+          name: string;
+          contract: any;
+        }[]
+      );
+
       const result = await multicall(config, {
         contracts: [
-          ...tokens.map((token) => ({
+          ...erc20s.map((token) => ({
             ...token.contract,
             functionName: 'balanceOf',
             args: [address],
           })),
-          ...tokens.map((token) => ({
+          ...erc20s.map((token) => ({
             ...token.contract,
             functionName: 'decimals',
           })),
@@ -49,15 +63,22 @@ export default function HomePage() {
       });
 
       const balance = result
-        .slice(0, tokens.length)
+        .slice(0, erc20s.length)
         .map((r) => r.result as bigint);
       const decimals = result
-        .slice(tokens.length)
+        .slice(erc20s.length)
         .map((r) => r.result as number);
       const structuredBalance = balance.reduce((prev, amount, key) => {
         prev[tokens[key].name] = formatUnits(amount, decimals[key]);
         return prev;
       }, {} as Record<string, string>);
+
+      const ethBalance = await getBalance(config, {
+        address,
+      });
+
+      structuredBalance['ETH'] = formatUnits(ethBalance.value, 18);
+
       setBalance(structuredBalance);
     };
 

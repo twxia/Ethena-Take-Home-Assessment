@@ -1,9 +1,10 @@
 import { multicall } from '@wagmi/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { erc20Abi, formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { toFixed } from '@/lib/number';
+import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 
 import { tokens } from '@/constant/tokens';
 import { config } from '@/constant/web3';
@@ -21,6 +22,8 @@ export default function MintPage({
   const [value, setValue] = useState('0');
   const { address } = useAccount();
   const [usdeBalance, setUsdeBalance] = useState('0');
+  const ref = useRef(null);
+  useOnClickOutside(ref, () => setToggled(false));
 
   useEffect(() => {
     const request = async () => {
@@ -138,6 +141,7 @@ export default function MintPage({
                   data-headlessui-state='open'
                   style={{ top: '110%' }}
                   aria-activedescendant='headlessui-listbox-option-:r1a:'
+                  ref={ref}
                 >
                   {tokens.map((token, key) => {
                     return (
@@ -167,7 +171,9 @@ export default function MintPage({
                           <div className='group-hover:text-cgray-400 flex flex-col items-start leading-[1.125rem]'>
                             {token.name}
                             <span className='group-hover:text-cgray-400 text-cgray-200 text-xs leading-none'>
-                              {toFixed(+balance[token.name], 3)}
+                              {balance[token.name]
+                                ? toFixed(+balance[token.name], 3)
+                                : '-'}
                             </span>
                           </div>
                         </div>
