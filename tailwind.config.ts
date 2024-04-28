@@ -1,13 +1,9 @@
 import type { Config } from 'tailwindcss';
-import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
-      fontFamily: {
-        primary: ['Inter', ...defaultTheme.fontFamily.sans],
-      },
       colors: {
         primary: {
           // Customize it on globals.css :root
@@ -24,6 +20,21 @@ export default {
           950: 'rgb(var(--tw-color-primary-950) / <alpha-value>)',
         },
         dark: '#222222',
+        cblue: {
+          200: 'rgb(185 210 249)',
+          400: 'rgb(136 180 245)',
+        },
+        cgray: {
+          100: 'rgb(160 159 166)',
+          200: 'rgb(126 125 134)',
+          300: 'rgb(80 79 87)',
+          400: 'rgb(52 52 58)',
+          500: 'rgb(40 40 44)',
+          600: 'rgb(37 37 40)',
+          700: 'rgb(24 24 27)',
+          800: 'rgb(12 12 13)',
+          900: 'rgb(17 17 17)',
+        },
       },
       keyframes: {
         flicker: {
