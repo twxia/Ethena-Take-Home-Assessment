@@ -76,7 +76,7 @@ export default function MintPage({
             <input
               className='bg-cgray-800 min-w-none mr-1 w-1/2 max-w-none overflow-ellipsis text-2xl outline-none'
               data-type='currency'
-              placeholder={0}
+              placeholder='0'
               type='text'
               value={value}
               onChange={onValueChange}
@@ -273,7 +273,7 @@ export default function MintPage({
         type='button'
         name='Mint'
         data-testid='submit-button'
-        disabled=''
+        disabled={true}
       >
         Mint
       </button>
